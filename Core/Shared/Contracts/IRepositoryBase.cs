@@ -11,7 +11,7 @@ namespace Core.Shared.Contracts
     {
         Task InsertAsync(T obj);
 
-        Task UpdateAsync(T obj);
+        Task UpdateAsync(string id, T obj);
 
         Task DeleteAsync(string id);
     }
