@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Infrastructure.Data;
+using AutoMapper;
+using Core.Comment.Entities;
+using Shopiall.Models;
 
 namespace Shopiall
 {
@@ -21,6 +24,8 @@ namespace Shopiall
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructureData();
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
