@@ -8,6 +8,7 @@ using Infrastructure.Data;
 using AutoMapper;
 using Core.Comment.Entities;
 using Shopiall.Models;
+using Infrastructure.Shopify;
 
 namespace Shopiall
 {
@@ -24,6 +25,7 @@ namespace Shopiall
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructureData();
+            services.AddInfrastructureShopify();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllersWithViews();
@@ -45,7 +47,7 @@ namespace Shopiall
             {
                 app.UseExceptionHandler("/Error");
             }
-
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
@@ -60,19 +62,19 @@ namespace Shopiall
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
+            /*
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-
+                
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
-            });
+            });*/
         }
     }
 }
