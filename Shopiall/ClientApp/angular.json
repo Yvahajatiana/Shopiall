@@ -154,5 +154,8 @@
       }
     }
   },
-  "defaultProject": "Shopiall"
+  "defaultProject": "Shopiall",
+  "cli": {
+    "analytics": "07f65600-6b84-453c-a1ce-8ffd1cc7106b"
+  }
 }
