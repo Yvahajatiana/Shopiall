@@ -1,4 +1,5 @@
 ﻿using Core.Comment.Contracts;
+using Core.Upsell.Contracts;
 using Infrastructure.Data.Maps;
 using Infrastructure.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +14,7 @@ namespace Infrastructure.Data
         {
             services.AddDataBase();
             services.AddDependencies();
-
-            _ = new MainMaps();
+            AddMaps(); 
         }
 
         private static void AddDataBase(this IServiceCollection services)
@@ -30,6 +30,12 @@ namespace Infrastructure.Data
         private static void AddDependencies(this IServiceCollection services)
         {
             services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IUpsellRepository, UpsellRepository>();
+        }
+
+        private static void AddMaps()
+        {
+            _ = new MainMaps();
         }
     }
 }
