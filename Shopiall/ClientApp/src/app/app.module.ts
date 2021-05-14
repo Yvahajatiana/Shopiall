@@ -18,8 +18,8 @@ import { CommentModule } from './comment/comment.module';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-    ]),
+    { path: '', component: HomeComponent, pathMatch: 'full' },
+], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
     MaterialModule,
     SharedModule,
