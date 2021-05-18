@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { CommentImportComponent } from '../comment-import/comment-import.component';
 import { CommentService } from '../services/comment.service';
+import { selectComments } from '../stores';
+import { loadComment } from '../stores/actions';
+import { columnDefs } from './comment-main.model';
 
 @Component({
   selector: 'app-comment-main',
@@ -8,18 +15,21 @@ import { CommentService } from '../services/comment.service';
   providers: [CommentService],
 })
 export class CommentMainComponent implements OnInit {
-  columnDefs = [
-    { field: 'userName' },
-    { field: 'productId' },
-    { field: 'rating' },
-    { field: 'content' },
-  ];
+  comments$: Observable<Comment[]>;
+  columnDefs = columnDefs;
 
-  rowData = [];
-
-  constructor(private commentService: CommentService) {}
+  constructor(
+    private commentService: CommentService,
+    private readonly store: Store,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
-    this.commentService.getComments().subscribe((x) => (this.rowData = x));
+    this.store.dispatch(loadComment());
+    this.comments$ = this.store.pipe(select(selectComments));
+  }
+
+  onImportClick(): void {
+    this.dialog.open(CommentImportComponent);
   }
 }

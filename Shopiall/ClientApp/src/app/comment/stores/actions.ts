@@ -13,4 +13,4 @@ export const loadCommentOk = createAction(
   props<{ comments: Comment[] }>()
 );
 
-export const action = createAction(ACTION_TYPE.LOAD_COMMENTS_KO);
+export const loadCommentKo = createAction(ACTION_TYPE.LOAD_COMMENTS_KO);

@@ -27,6 +27,12 @@ namespace Shopiall
             services.AddInfrastructureData();
             services.AddInfrastructureShopify();
             services.AddAutoMapper(typeof(Startup));
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -53,7 +59,7 @@ namespace Shopiall
             {
                 app.UseSpaStaticFiles();
             }
-
+            app.UseCors();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -69,11 +75,11 @@ namespace Shopiall
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-                
+                /*
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
-                }
+                }*/
             });
         }
     }

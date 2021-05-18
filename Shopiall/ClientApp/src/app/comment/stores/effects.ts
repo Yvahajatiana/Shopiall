@@ -7,14 +7,19 @@ import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class CommentEffect {
-  loadComment$ = this.actions$.pipe(
-    ofType(ACTION_TYPE.LOAD_COMMENTS),
-    switchMap(() => {
-      return this.commentService.getComments().pipe(
-        map((data) => ({ type: ACTION_TYPE.LOAD_COMMENTS_OK, comments: data })),
-        catchError(() => of({ type: ACTION_TYPE.LOAD_COMMENTS_KO }))
-      );
-    })
+  loadComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ACTION_TYPE.LOAD_COMMENTS),
+      switchMap(() => {
+        return this.commentService.getComments().pipe(
+          map((data) => ({
+            type: ACTION_TYPE.LOAD_COMMENTS_OK,
+            comments: data,
+          })),
+          catchError(() => of({ type: ACTION_TYPE.LOAD_COMMENTS_KO }))
+        );
+      })
+    )
   );
   constructor(
     private actions$: Actions,
