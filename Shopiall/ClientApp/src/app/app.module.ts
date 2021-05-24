@@ -13,6 +13,9 @@ import { CommentModule } from './comment/comment.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import { CommentMainComponent } from './comment/comment-main/comment-main.component';
+import { UpsellListComponent } from './upsell/components/upsell-list/upsell-list.component';
+import { UpsellModule } from './upsell/upsell.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -21,7 +24,22 @@ import { EffectsModule } from '@ngrx/effects';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot(
-      [{ path: '', component: HomeComponent, pathMatch: 'full' }],
+      [
+        {
+          path: '',
+          component: HomeComponent,
+          children: [
+            {
+              path: 'comments',
+              component: CommentMainComponent,
+            },
+            {
+              path: 'upsells',
+              component: UpsellListComponent,
+            },
+          ],
+        },
+      ],
       { relativeLinkResolution: 'legacy' }
     ),
     BrowserAnimationsModule,
@@ -31,6 +49,7 @@ import { EffectsModule } from '@ngrx/effects';
     MaterialModule,
     SharedModule,
     CommentModule,
+    UpsellModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
