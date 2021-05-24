@@ -11,11 +11,15 @@ import { CommentService } from './services/comment.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../material/material.module';
 import { CommentImportComponent } from './comment-import/comment-import.component';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [CommentMainComponent, CommentImportComponent],
   imports: [
     CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
     AgGridModule.withComponents([]),
     StoreModule.forFeature(commentFeatureKey, commentReducer),
     EffectsModule.forFeature([CommentEffect]),

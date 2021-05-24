@@ -1,5 +1,6 @@
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-material.css";
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
@@ -25,4 +26,13 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.shopiall-full-width {
+  width: 100%;
+}
+
+.ag-theme-material,
+.ag-theme-material .ag-header-row {
+  font-size: 15px;
 }
