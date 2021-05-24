@@ -7,6 +7,8 @@ namespace Core.Upsell.Entities
 {
     public class UpsellEntity : BaseEntity
     {
+        public long OwnerProduct { get; set; }
+
         public string Title { get; set; }
 
         public string PrimaryText { get; set; }
