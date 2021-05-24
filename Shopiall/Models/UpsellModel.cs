@@ -9,6 +9,8 @@ namespace Shopiall.Models
     {
         public string Title { get; set; }
 
+        public long OwnerProduct { get; set; }
+
         public string PrimaryText { get; set; }
 
         public string SecondaryText { get; set; }
