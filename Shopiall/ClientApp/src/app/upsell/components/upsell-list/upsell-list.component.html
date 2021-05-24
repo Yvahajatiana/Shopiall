@@ -1,0 +1,14 @@
+<div class="upsell-list-container">
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <button class="btn btn-danger btn-sm">Delete</button>
+        <button class="btn btn-secondary btn-sm">Edit</button>
+        <button class="btn btn-success btn-sm">Add</button>
+    </div>
+    <app-upsell-form></app-upsell-form>
+    <h5>Upsells</h5>
+    <mat-card class="upsell-list-child-container">
+        <ag-grid-angular *ngIf="upsellList$ | async" style="width: 100%; height: 500px;" class="ag-theme-material"
+            [rowData]="upsellList$ | async" [columnDefs]="columnDefs">
+        </ag-grid-angular>
+    </mat-card>
+</div>
