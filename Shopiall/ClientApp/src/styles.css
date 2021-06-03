@@ -36,3 +36,11 @@ body {
 .ag-theme-material .ag-header-row {
   font-size: 15px;
 }
+
+.details-layout-container {
+  padding: 20px;
+}
+
+.margined-block {
+  margin-bottom: 10px;
+}
