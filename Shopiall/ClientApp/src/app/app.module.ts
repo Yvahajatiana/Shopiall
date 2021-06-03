@@ -14,8 +14,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { CommentMainComponent } from './comment/comment-main/comment-main.component';
-import { UpsellListComponent } from './upsell/components/upsell-list/upsell-list.component';
 import { UpsellModule } from './upsell/upsell.module';
+import { UpsellMainComponent } from './upsell/components/upsell-main/upsell-main.component';
+import { AppRoutingModule } from './app.routes';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -23,25 +24,7 @@ import { UpsellModule } from './upsell/upsell.module';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(
-      [
-        {
-          path: '',
-          component: HomeComponent,
-          children: [
-            {
-              path: 'comments',
-              component: CommentMainComponent,
-            },
-            {
-              path: 'upsells',
-              component: UpsellListComponent,
-            },
-          ],
-        },
-      ],
-      { relativeLinkResolution: 'legacy' }
-    ),
+    RouterModule,
     BrowserAnimationsModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot(),
@@ -50,6 +33,7 @@ import { UpsellModule } from './upsell/upsell.module';
     SharedModule,
     CommentModule,
     UpsellModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
