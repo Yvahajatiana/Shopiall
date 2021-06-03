@@ -24,4 +24,12 @@ export const colDefs = [
     field: 'secondaryText',
     headerName: 'Texte secondaire',
   } as ColumnDef,
+  {
+    field: 'ownerProduct',
+    headerName: 'Belong to',
+  } as ColumnDef,
+  {
+    field: 'productIds',
+    headerName: 'With products',
+  } as ColumnDef,
 ];
