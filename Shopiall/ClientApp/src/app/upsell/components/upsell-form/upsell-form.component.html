@@ -1,4 +1,9 @@
-<h5>Add new Upsell</h5>
+<div class="margined-block" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <button class="btn btn-outline-dark btn-sm" (click)="back()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h5>{{formTitle}}</h5>
+</div>
 <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
     <div fxFlex="40">
         <mat-card class="upsell-list-child-container">
@@ -40,8 +45,8 @@
                 </form>
             </div>
             <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-                <button class="btn btn-danger btn-sm">Cancel</button>
-                <button class="btn btn-success btn-sm">Save</button>
+                <button class="btn btn-danger btn-sm" (click)="cancelChange()">Cancel</button>
+                <button class="btn btn-success btn-sm" (click)="saveUpsell()">Save</button>
             </div>
         </mat-card>
     </div>
