@@ -13,9 +13,12 @@ import { AgGridModule } from 'ag-grid-angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UpsellFormComponent } from './components/upsell-form/upsell-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProductModule } from '../product/product.module';
+import { UpsellMainComponent } from './components/upsell-main/upsell-main.component';
+import { UpsellRoutingModule } from './upsell.routes';
 
 @NgModule({
-  declarations: [UpsellListComponent, UpsellFormComponent],
+  declarations: [UpsellListComponent, UpsellFormComponent, UpsellMainComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -25,7 +28,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     AgGridModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    ProductModule,
+    UpsellRoutingModule,
   ],
-  exports: [UpsellListComponent],
+  exports: [UpsellMainComponent],
 })
 export class UpsellModule {}
