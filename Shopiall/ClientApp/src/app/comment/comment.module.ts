@@ -13,6 +13,7 @@ import { MaterialModule } from '../material/material.module';
 import { CommentImportComponent } from './comment-import/comment-import.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommentRoutingModule } from './comment-routing.module';
 
 @NgModule({
   declarations: [CommentMainComponent, CommentImportComponent],
@@ -25,6 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     EffectsModule.forFeature([CommentEffect]),
     FlexLayoutModule,
     MaterialModule,
+    CommentRoutingModule,
   ],
   exports: [CommentMainComponent],
   providers: [CommentService],
