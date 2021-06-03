@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { Product, ProductApiRequest } from '../product.model';
 import { ProductModule } from '../product.module';
 
-@Injectable({
-  providedIn: ProductModule,
-})
+@Injectable()
 export class ProductService {
   constructor(private httpClient: HttpClient) {}
 
