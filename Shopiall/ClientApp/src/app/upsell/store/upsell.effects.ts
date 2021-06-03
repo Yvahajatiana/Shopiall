@@ -34,7 +34,7 @@ export class UpsellEffects {
         this.upsellService.getUpsellById(action.id).pipe(
           map((data) => ({
             type: UPSELL_ACTION_TYPE.LOAD_UPSELL_BY_ID_OK,
-            upsells: data,
+            upsell: data,
           })),
           catchError(() =>
             of({ type: UPSELL_ACTION_TYPE.LOAD_UPSELL_BY_ID_KO })
