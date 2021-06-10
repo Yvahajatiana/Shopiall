@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Infrastructure.Data;
+using AutoMapper;
+using Core.Comment.Entities;
+using Shopiall.Models;
+using Infrastructure.Shopify;
 
 namespace Shopiall
 {
@@ -21,6 +25,15 @@ namespace Shopiall
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructureData();
+            services.AddInfrastructureShopify();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -40,13 +53,13 @@ namespace Shopiall
             {
                 app.UseExceptionHandler("/Error");
             }
-
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
-
+            app.UseCors();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -55,18 +68,18 @@ namespace Shopiall
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-
+            
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-
+                /*
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
-                }
+                }*/
             });
         }
     }

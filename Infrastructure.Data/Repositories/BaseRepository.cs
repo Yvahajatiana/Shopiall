@@ -1,5 +1,6 @@
 ﻿using Core.Shared.Contracts;
 using Core.Shared.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Infrastructure.Data.Repositories
 {
     public class BaseRepository<T> : IRepositoryBase<T> where T: BaseEntity
     {
-        private const string DATABASE = "poc_dotnet_mongodb";
+        private const string DATABASE = "ShopiallDb";
         private readonly IMongoClient _mongoClient;
         private readonly IClientSessionHandle _clientSessionHandle;
         private readonly string _collection;
@@ -27,14 +28,18 @@ namespace Infrastructure.Data.Repositories
                 _mongoClient.GetDatabase(DATABASE).CreateCollection(collection);
         }
 
-        public async Task InsertAsync(T obj) =>
-        await Collection.InsertOneAsync(_clientSessionHandle, obj);
-
-        public async Task UpdateAsync(T obj)
+        public async Task InsertAsync(T obj)
         {
+            obj.Id = ObjectId.GenerateNewId().ToString();
+            await Collection.InsertOneAsync(_clientSessionHandle, obj);
+        }
+        
+
+        public async Task UpdateAsync(string id, T obj)
+        {
+            obj.Id = id;
             Expression<Func<T, string>> func = f => f.Id;
-            var value = (string)obj.GetType().GetProperty(func.Body.ToString().Split(".")[1]).GetValue(obj, null);
-            var filter = Builders<T>.Filter.Eq(func, value);
+            var filter = Builders<T>.Filter.Eq(func, id);
 
             if (obj != null)
                 await Collection.ReplaceOneAsync(_clientSessionHandle, filter, obj);

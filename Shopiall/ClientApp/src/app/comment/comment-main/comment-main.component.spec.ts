@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CommentMainComponent } from './comment-main.component';
 
@@ -6,7 +6,7 @@ describe('CommentMainComponent', () => {
   let component: CommentMainComponent;
   let fixture: ComponentFixture<CommentMainComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CommentMainComponent ]
     })

@@ -1,0 +1,53 @@
+<div class="margined-block" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <button class="btn btn-outline-dark btn-sm" (click)="back()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h5>{{formTitle}}</h5>
+</div>
+<div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <div fxFlex="40">
+        <mat-card class="upsell-list-child-container">
+            <h5>Upsell Preview</h5>
+        </mat-card>
+    </div>
+    <div fxFlex="60">
+        <mat-card class="upsell-list-child-container">
+            <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="gappx">
+                <form [formGroup]="formGroup">
+                    <mat-form-field class="shopiall-full-width">
+                        <mat-label>Product</mat-label>
+                        <mat-select formControlName="ownerProductId">
+                            <mat-option *ngFor="let product of products$ | async" [value]="product.id">
+                                {{product.title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="shopiall-full-width">
+                        <mat-label>Title</mat-label>
+                        <input matInput formControlName="title">
+                    </mat-form-field>
+                    <mat-form-field class="shopiall-full-width">
+                        <mat-label>Primary Text</mat-label>
+                        <input matInput formControlName="primaryText">
+                    </mat-form-field>
+                    <mat-form-field class="shopiall-full-width">
+                        <mat-label>Secondary Text</mat-label>
+                        <input matInput formControlName="secondaryText">
+                    </mat-form-field>
+                    <mat-form-field class="shopiall-full-width">
+                        <mat-label>Products to upselled</mat-label>
+                        <mat-select formControlName="productIds" multiple>
+                            <mat-option *ngFor="let product of products$ | async" [value]="product.id">
+                                {{product.title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+                <button class="btn btn-danger btn-sm" (click)="cancelChange()">Cancel</button>
+                <button class="btn btn-success btn-sm" (click)="saveUpsell()">Save</button>
+            </div>
+        </mat-card>
+    </div>
+</div>

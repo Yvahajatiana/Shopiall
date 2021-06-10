@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Core.Shared.Entities
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
-        public string Id { get; private set; }
+        public string Id { get; set; }
     }
 }
