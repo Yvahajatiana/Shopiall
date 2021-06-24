@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Comment.Contracts;
 using Core.Comment.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Shopiall.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CommentController : ControllerBase

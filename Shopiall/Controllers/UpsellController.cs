@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Upsell.Contracts;
 using Core.Upsell.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shopiall.Models;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Shopiall.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UpsellController : ControllerBase

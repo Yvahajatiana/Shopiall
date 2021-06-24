@@ -9,6 +9,13 @@ using AutoMapper;
 using Core.Comment.Entities;
 using Shopiall.Models;
 using Infrastructure.Shopify;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Shopiall
 {
@@ -24,8 +31,18 @@ namespace Shopiall
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var tokenConfig = Configuration.GetSection("TokenConfiguration");
+            services.Configure<TokenConfiguration>(tokenConfig);
+            var tokenConfiguration = new TokenConfiguration();
+            tokenConfig.Bind(tokenConfiguration);
+
+            var shopifyConfig = Configuration.GetSection("ShopifyConfiguration");
+            services.Configure<ShopifyConfig>(shopifyConfig);
+            var shopifyConfiguration = new ShopifyConfig();
+            shopifyConfig.Bind(shopifyConfiguration);
+
             services.AddInfrastructureData();
-            services.AddInfrastructureShopify();
+            
             services.AddAutoMapper(typeof(Startup));
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -34,6 +51,42 @@ namespace Shopiall
                        .AllowAnyHeader();
             }));
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/authentication/token";
+                options.LogoutPath = "/authentication/signout";
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = tokenConfiguration.Issuer,
+                    ValidAudience = tokenConfiguration.ValideAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration.SecretKey))
+                };
+            })
+            .AddShopify(x =>
+            {
+                x.ClientId = shopifyConfiguration.ClientId;
+                x.ClientSecret = shopifyConfiguration.ClientSecret;
+                x.SaveTokens = true;
+                x.Events.OnCreatingTicket = context =>
+                {
+                    context.Identity.AddClaim(new Claim("access_token", context.AccessToken));
+                    return System.Threading.Tasks.Task.CompletedTask;
+                };
+            });
+            services.AddInfrastructureShopify();
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -55,12 +108,12 @@ namespace Shopiall
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
+            app.UseSpaStaticFiles();
             app.UseCors();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
