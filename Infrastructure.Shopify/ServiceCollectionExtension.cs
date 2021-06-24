@@ -16,15 +16,15 @@ namespace Infrastructure.Shopify
     {
         public static void AddInfrastructureShopify(this IServiceCollection services)
         {
-            services.AddCredentials("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");
+            services.AddCredentials();
             services.AddDependencies();
         }
 
-        private static void AddCredentials(this IServiceCollection services, string token)
+        private static void AddCredentials(this IServiceCollection services)
         {
             services.AddSingleton<IShopifyCredential>(x =>
             {
-                return new ShopifyCredential { PermanentToken = token };
+                return new ShopifyCredential();
             });
         }
 

@@ -8,8 +8,8 @@ namespace Core.Product.Contracts
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductEntity>> GetProducts();
+        Task<IEnumerable<ProductEntity>> GetProducts(string token);
 
-        Task<IEnumerable<ProductEntity>> GetProductsByIds(long[] ids);
+        Task<IEnumerable<ProductEntity>> GetProductsByIds(long[] ids, string token);
     }
 }

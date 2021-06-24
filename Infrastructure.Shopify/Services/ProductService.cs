@@ -20,9 +20,10 @@ namespace Infrastructure.Shopify.Services
             this.shopifyCredential = shopifyCredential;
         }
 
-        public async Task<IEnumerable<ProductEntity>> GetProducts()
+        public async Task<IEnumerable<ProductEntity>> GetProducts(string token)
         {
-            var request = CreateNoDataRequest(GetUri(PRODUCT_URI));
+
+            var request = CreateNoDataRequest(GetUri(PRODUCT_URI), token);
 
             var result = await Get(request);
             var parsedResult = JsonConvert.DeserializeObject<ProductShopifyResponse>(result);
@@ -30,10 +31,10 @@ namespace Infrastructure.Shopify.Services
             return parsedResult.Products;
         }
 
-        public async Task<IEnumerable<ProductEntity>> GetProductsByIds(long[] ids)
+        public async Task<IEnumerable<ProductEntity>> GetProductsByIds(long[] ids, string token)
         {
             var uri = AddIdsParameter(GetUri(PRODUCT_URI), ids);
-            var request = CreateNoDataRequest(uri);
+            var request = CreateNoDataRequest(uri, token);
 
             var result = await Get(request);
             var parsedResult = JsonConvert.DeserializeObject<ProductShopifyResponse>(result);
@@ -41,12 +42,12 @@ namespace Infrastructure.Shopify.Services
             return parsedResult.Products;
         }
 
-        private ShopifyRequestNoData CreateNoDataRequest(string uri)
+        private ShopifyRequestNoData CreateNoDataRequest(string uri, string token)
         {
             return new ShopifyRequestNoData
             {
                 Uri = uri,
-                PermanentToken = shopifyCredential.PermanentToken
+                PermanentToken = token
             };
         }
 
