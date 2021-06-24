@@ -1,0 +1,15 @@
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="gappx">
+  <form action="/authentication/token" method="GET" class="details-layout-container">
+    <mat-card>
+      <div class="form-group">
+        <label for="shopName">Shop name</label>
+        <input type="text" class="form-control" id="shopName" aria-describedby="shopNameHelp"
+          placeholder="Enter shop name" required name="shop">
+        <small id="shopNameHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="gappx">
+        <button mat-button color="primary">LOGIN</button>
+      </div>
+    </mat-card>
+  </form>
+</div>

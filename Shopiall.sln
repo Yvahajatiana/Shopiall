@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Data", "Infrastructure.Data\Infrastructure.Data.csproj", "{9BC5516C-3AEA-4AB2-8364-99B4F1EEE217}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Shopify", "Infrastructure.Shopify\Infrastructure.Shopify.csproj", "{96B393A4-61C7-468D-89B7-4EA66CE4AF99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Shopify", "Infrastructure.Shopify\Infrastructure.Shopify.csproj", "{96B393A4-61C7-468D-89B7-4EA66CE4AF99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

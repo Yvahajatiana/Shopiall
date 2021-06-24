@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "echo starting... && ng serve",
+    "start": "ng serve",
     "build": "ng build",
     "build:ssr": "ng run Shopiall:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "proxy": "ng serve --proxy-config proxy.json"
+    "proxy": "ng serve --proxy-config proxy.json",
+    "buildprod": "ng build --configuration production --source-map"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +27,7 @@
     "@angular/platform-browser-dynamic": "12.0.0",
     "@angular/platform-server": "12.0.0",
     "@angular/router": "12.0.0",
+    "@auth0/angular-jwt": "^5.0.2",
     "@ngrx/effects": "^12.0.0",
     "@ngrx/store": "^12.0.0",
     "@ngrx/store-devtools": "^12.0.0",

@@ -56,6 +56,7 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
       productIds: [[]],
     });
 
+    // TODO: do not dispatch loadProductList when the productList is recently updated
     this.store.dispatch(loadProductList());
     this.products$ = this.store.pipe(select(selectProductList));
   }
@@ -116,6 +117,7 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
     this.store.dispatch(createUpsell({ upsell: this.currentUpsell }));
   }
 
+  // TODO: disable cancel btn when nothing change in the form
   cancelChange(): void {
     this.createUpsellInstance();
   }
