@@ -10,23 +10,35 @@ export const ROUTES: Routes = [
         path: 'upsells',
         loadChildren: () =>
           import('./upsell/upsell.module').then((x) => x.UpsellModule),
+        canActivate: [AuthGuard],
       },
       {
         path: 'comments',
         loadChildren: () =>
           import('./comment/comment.module').then((x) => x.CommentModule),
+        canActivate: [AuthGuard],
       },
     ],
   },
   {
+    path: 'authentication',
+    loadChildren: () =>
+      import('./authentication/authentication.module').then(
+        (x) => x.AuthenticationModule
+      ),
+    canActivate: [NoAuthGuard],
+  },
+  {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
 ];
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthGuard } from './core/auth.guard';
+import { NoAuthGuard } from './core/no-auth.guard';
 
 @NgModule({
   imports: [

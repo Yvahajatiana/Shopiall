@@ -15,7 +15,15 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Shopiall": {
+    "Shopiall Local": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local"
+      },
+      "applicationUrl": "http://localhost:5000;https://localhost:5001;https://kiassylocal.freeboxos.fr:81;https://kiassylocal.freeboxos.fr"
+    },
+    "Shopiall Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

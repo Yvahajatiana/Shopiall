@@ -20,7 +20,6 @@ export const UPSELL_ROUTES: Routes = [
       {
         path: '',
         component: UpsellListComponent,
-        pathMatch: 'full',
       },
     ],
   },
