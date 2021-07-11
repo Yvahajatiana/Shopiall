@@ -1,6 +1,6 @@
-import { CommentState } from './comment/stores';
-import { ProductState } from './product/store';
-import { UpsellState } from './upsell/store';
+import { CommentState } from './features/comment/stores';
+import { ProductState } from './features/product/store';
+import { UpsellState } from './features/upsell/store';
 
 export interface AppState {
   commentState: CommentState;
