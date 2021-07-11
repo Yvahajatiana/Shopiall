@@ -28,18 +28,18 @@ export const MENU: MenuItem[] = [
       },
     ],
   },
-  {
-    label: 'Comments',
-    icon: 'message-square',
-    subItems: [
-      {
-        label: 'All',
-        link: '/dashboard/comments/',
-      },
-      {
-        label: 'New',
-        link: '/dashboard/comments/create',
-      },
-    ],
-  },
+  // {
+  //   label: 'Comments',
+  //   icon: 'message-square',
+  //   subItems: [
+  //     {
+  //       label: 'All',
+  //       link: '/dashboard/comments/',
+  //     },
+  //     {
+  //       label: 'New',
+  //       link: '/dashboard/comments/create',
+  //     },
+  //   ],
+  // },
 ];
