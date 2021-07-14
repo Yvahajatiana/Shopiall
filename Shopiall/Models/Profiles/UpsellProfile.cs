@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Upsell.Entities;
+using Shopiall.Models.Upsells;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Shopiall.Models.Profiles
         public UpsellProfile()
         {
             CreateMap<UpsellModel, UpsellEntity>();
+            CreateMap<UpsellEntity, UpsellResponseModel>();
         }
     }
 }

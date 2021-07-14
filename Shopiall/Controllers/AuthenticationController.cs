@@ -74,7 +74,7 @@ namespace Shopiall.Controllers
 
             var shopName = shop.Split(".")[0];
             var properties = new ShopifyAuthenticationProperties(shopName);
-            properties.Scope = "write_orders,read_customers,read_products,read_product_listings";
+            properties.Scope = "write_orders,read_customers,read_products,read_product_listings,read_script_tags,write_script_tags";
             properties.RedirectUri = "/authentication/jwttoken";                                                
 
             return properties;
