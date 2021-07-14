@@ -2,14 +2,8 @@
     <div class="col-md-6 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Basic Form</h6>
+                <h6 class="card-title">{{ formTitle | uppercase }}</h6>
                 <form class="forms-sample" [formGroup]="formGroup">
-                    <div class="form-group">
-                        <label for="ownerProductId">Product</label>
-                        <ng-select id="ownerProductId" [items]="products$ | async" bindLabel="title" bindValue="id"
-                            placeholder="Select item" formControlName="productIds" [multiple]="false">
-                        </ng-select>
-                    </div>
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" class="form-control" id="title" autocomplete="off" placeholder="Title"

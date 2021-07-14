@@ -13,6 +13,7 @@ import { selectCurrentUpsell } from '../../store';
 import {
   createUpsell,
   loadUpsellById,
+  updateUpsell,
   UPSELL_ACTION_TYPE,
 } from '../../store/upsell.actions';
 import { Upsell } from '../../upsell.model';
@@ -25,12 +26,13 @@ import { Upsell } from '../../upsell.model';
 export class UpsellFormComponent implements OnInit, OnDestroy {
   products$: Observable<Product[]>;
   formGroup: FormGroup;
-  currentUpsell: Upsell;
+  currentUpsellId: string;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   formTitle = 'Add new Upsell';
-  isCreateNewUpsell = true;
+  isCreation = true;
+  mainUrl = '/dashboard/upsells/';
 
   constructor(
     private store: Store,
@@ -41,68 +43,71 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.initRouteParams();
     this.initForm();
     this.initSubscriptions();
-    this.initRouteParams();
   }
 
   // TODO: add a form validations
   initForm(): void {
-    this.formGroup = this.fb.group({
-      ownerProductId: [],
-      title: [],
-      primaryText: [],
-      secondaryText: [],
-      productIds: [[]],
-    });
-
+    this.initEmptyFb();
     // TODO: do not dispatch loadProductList when the productList is recently updated
     this.store.dispatch(loadProductList());
+    if (!this.isCreation) {
+      this.store.dispatch(loadUpsellById({ id: this.currentUpsellId }));
+    }
     this.products$ = this.store.pipe(select(selectProductList));
   }
 
   initSubscriptions(): void {
-    this.formGroup.valueChanges.subscribe((formValue) => {
-      this.setUpsellInstance(formValue);
-      console.log(this.formGroup);
-    });
     this.actions$
       .pipe(
-        ofType(UPSELL_ACTION_TYPE.CREATE_UPSELL_OK),
+        ofType(
+          UPSELL_ACTION_TYPE.CREATE_UPSELL_OK,
+          UPSELL_ACTION_TYPE.UPDATE_UPSELL_OK
+        ),
         takeUntil(this.destroyed$)
       )
-      .subscribe(() => this.redirectAfterSave());
+      .subscribe(() => this.goback());
 
     // TODO: this subscription is for edit only, disable it for upsell creation
-    this.store
-      .pipe(select(selectCurrentUpsell), skip(1), takeUntil(this.destroyed$))
-      .subscribe((upsell) => {
-        this.updateTitle(upsell);
-        this.updateFbValues(upsell);
-      });
+    if (!this.isCreation) {
+      this.store
+        .pipe(select(selectCurrentUpsell), takeUntil(this.destroyed$))
+        .subscribe((upsell) => {
+          this.updateTitle(upsell);
+          this.updateFormValue(upsell);
+          this.currentUpsellId = upsell.id;
+        });
+    }
   }
 
   initRouteParams(): void {
     const routeMaps = this.route.snapshot.paramMap;
     const upsellId = routeMaps.get('upsellId');
-    if (isNullOrUndefined(upsellId)) {
-      return;
-    }
-    console.log(upsellId);
-    this.store.dispatch(loadUpsellById({ id: upsellId }));
-    this.isCreateNewUpsell = false;
+    this.isCreation = isNullOrUndefined(upsellId);
+    this.currentUpsellId = upsellId;
   }
 
-  updateFbValues(currentUpsell: Upsell) {
-    this.formGroup.patchValue({
-      ownerProductId: currentUpsell.ownerProduct,
-      title: currentUpsell.title,
-      primaryText: currentUpsell.primaryText,
-      secondaryText: currentUpsell.secondaryText,
-      productIds: currentUpsell.productIds,
+  initEmptyFb(): void {
+    this.formGroup = this.fb.group({
+      title: [],
+      primaryText: [],
+      secondaryText: [],
+      productIds: [[]],
     });
+  }
 
-    console.log(this.formGroup);
+  updateFormValue(upsell: Upsell): void {
+    this.formGroup.patchValue(
+      {
+        title: upsell.title,
+        primaryText: upsell.primaryText,
+        secondaryText: upsell.secondaryText,
+        productIds: upsell.productIds,
+      },
+      { emitEvent: false, onlySelf: true }
+    );
   }
 
   updateTitle(upsell: Upsell) {
@@ -111,46 +116,31 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
 
   // TODO: do not save an empty form, ie disable save btn when form is empty
   saveUpsell(): void {
-    if (isNullOrUndefined(this.currentUpsell)) {
+    if (isNullOrUndefined(this.formGroup.value)) {
       return;
     }
-    this.store.dispatch(createUpsell({ upsell: this.currentUpsell }));
-  }
-
-  // TODO: disable cancel btn when nothing change in the form
-  cancelChange(): void {
-    this.createUpsellInstance();
-  }
-
-  setUpsellInstance(formValue: any): void {
-    if (isNullOrUndefined(this.currentUpsell)) {
-      this.createUpsellInstance();
+    if (this.isCreation) {
+      this.store.dispatch(createUpsell({ upsell: this.formGroup.value }));
+    } else {
+      this.store.dispatch(
+        updateUpsell({
+          id: this.currentUpsellId,
+          upsell: this.formGroup.value,
+        })
+      );
     }
-    this.currentUpsell.ownerProduct = formValue.ownerProductId;
-    this.currentUpsell.primaryText = formValue.primaryText;
-    this.currentUpsell.productIds = formValue.productIds;
-    this.currentUpsell.secondaryText = formValue.secondaryText;
-    this.currentUpsell.title = formValue.title;
   }
 
-  createUpsellInstance(): void {
-    this.currentUpsell = {} as Upsell;
-  }
-
-  redirectAfterSave(): void {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  goback(): void {
+    this.router.navigate([this.mainUrl]);
   }
 
   // TODO: check if the user have a change, if true show confirm dialog else redirect
-  back(): void {
-    console.log(this.currentUpsell);
-    if (
-      !isNullOrUndefined(this.currentUpsell) &&
-      !confirm('Are sure to exit without save?')
-    ) {
+  cancelChange(): void {
+    if (!confirm('Are sure to exit without save?')) {
       return;
     }
-    this.router.navigate(['../../'], { relativeTo: this.route });
+    this.goback();
   }
 
   ngOnDestroy(): void {
