@@ -18,7 +18,7 @@ namespace Infrastructure.Data.Maps
                 map.SetIgnoreExtraElements(true);
                 map.MapMember(x => x.Title).SetIsRequired(true);
                 map.MapMember(x => x.PrimaryText);
-                map.MapMember(x => x.OwnerProduct);
+                map.UnmapMember(x => x.OwnerProduct);
                 map.MapMember(x => x.SecondaryText);
                 map.MapMember(x => x.ProductIds).SetIsRequired(true);
             });
