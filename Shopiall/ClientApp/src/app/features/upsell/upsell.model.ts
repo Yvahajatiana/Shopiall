@@ -1,12 +1,13 @@
 import { ColumnDef } from '../../shared/models/table.model';
+import { Product } from '../product/product.model';
 
 export interface Upsell {
   id: string;
   title: string;
-  ownerProduct: string;
   primaryText: string;
   secondaryText: string;
   productIds: string;
+  products: Product[];
 }
 
 export const colDefs = [
