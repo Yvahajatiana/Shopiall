@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+<div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="10px" style="margin-bottom: 10px;">
     <button class="btn btn-danger btn-sm" (click)="remove()" [disabled]="selectedUpsell === undefined">Delete</button>
     <button class="btn btn-secondary btn-sm" (click)="edit()" [disabled]="selectedUpsell === undefined">Edit</button>
     <a class="btn btn-success btn-sm" routerLink="create" routerLinkActive='active'>Add</a>
@@ -7,15 +7,20 @@
     <div class="col-md-12 stretch-card">
         <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Ngx-Datatable</h6>
+                <h6 class="card-title">UPSELLS</h6>
                 <div class="table-responsive">
                     <ngx-datatable class="bootstrap" [rows]="upsellList$ | async" [loadingIndicator]="loadingIndicator"
-                        [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                        [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto"
+                        [selectionType]="SelectionType.single" (select)="onSelect($event)" [selectAllRowsOnPage]="false"
+                        [limit]="5" [selected]="selected">
                         <ngx-datatable-column name="Title"></ngx-datatable-column>
                         <ngx-datatable-column name="Primary Text"></ngx-datatable-column>
                         <ngx-datatable-column name="Secondary Text"></ngx-datatable-column>
-                        <ngx-datatable-column name="OwnerProductId" prop="ownerProductId"></ngx-datatable-column>
-                        <ngx-datatable-column name="Products"></ngx-datatable-column>
+                        <ngx-datatable-column name="Products">
+                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                <span class="badge badge-primary" *ngFor="let item of value">{{ item.title }}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
                     </ngx-datatable>
                 </div>
             </div>

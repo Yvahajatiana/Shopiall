@@ -6,7 +6,7 @@ import { isNullOrUndefined } from 'src/app/shared/helpers/instance.helpers';
 import { selectUpsellList } from '../../store';
 import { deleteUpsell, loadUpsellList } from '../../store/upsell.actions';
 import { colDefs, Upsell } from '../../upsell.model';
-import { ColumnMode } from '@swimlane/ngx-datatable';
+import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'app-upsell-list',
@@ -14,15 +14,15 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
   styleUrls: ['./upsell-list.component.css'],
 })
 export class UpsellListComponent implements OnInit {
-  private gridApi;
-  private gridColumnApi;
   upsellList$: Observable<Upsell[]>;
   columnDefs = colDefs;
   selectedUpsell: Upsell;
+  selected = [];
   rows = [];
   loadingIndicator = true;
   reorderable = true;
   ColumnMode = ColumnMode;
+  SelectionType = SelectionType;
   constructor(
     private store: Store,
     private roter: Router,
@@ -60,18 +60,14 @@ export class UpsellListComponent implements OnInit {
     this.reset();
   }
 
-  onSelectionChanged(): void {
-    const selectedRows: Upsell[] = this.gridApi.getSelectedRows();
-    if (isNullOrUndefined(selectedRows)) {
-      return;
+  onSelect({ selected }) {
+    console.log('Select Event', selected);
+    this.selected = selected;
+    if (selected && selected.length > 0) {
+      this.selectedUpsell = selected[0];
+    } else {
+      this.selectedUpsell = undefined;
     }
-    this.selectedUpsell = selectedRows[0];
-    console.log(this.selectedUpsell);
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
   }
 
   reset(): void {
