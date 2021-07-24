@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -34,6 +34,9 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
   isCreation = true;
   mainUrl = '/dashboard/upsells/';
 
+  submitted = false;
+  changed = false;
+
   constructor(
     private store: Store,
     private readonly fb: FormBuilder,
@@ -48,7 +51,6 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
     this.initSubscriptions();
   }
 
-  // TODO: add a form validations
   initForm(): void {
     this.initEmptyFb();
     // TODO: do not dispatch loadProductList when the productList is recently updated
@@ -70,7 +72,6 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => this.goback());
 
-    // TODO: this subscription is for edit only, disable it for upsell creation
     if (!this.isCreation) {
       this.store
         .pipe(select(selectCurrentUpsell), takeUntil(this.destroyed$))
@@ -91,10 +92,13 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
 
   initEmptyFb(): void {
     this.formGroup = this.fb.group({
-      title: [],
-      primaryText: [],
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      primaryText: ['', [Validators.required, Validators.minLength(3)]],
       secondaryText: [],
-      productIds: [[]],
+      productIds: [
+        [],
+        [Validators.required, Validators.minLength(1), Validators.maxLength(3)],
+      ],
     });
   }
 
@@ -114,9 +118,9 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
     this.formTitle = `Edit upsell: ${upsell.title}`;
   }
 
-  // TODO: do not save an empty form, ie disable save btn when form is empty
   saveUpsell(): void {
-    if (isNullOrUndefined(this.formGroup.value)) {
+    this.submitted = true;
+    if (isNullOrUndefined(this.formGroup.value) || this.formGroup.invalid) {
       return;
     }
     if (this.isCreation) {
@@ -135,12 +139,14 @@ export class UpsellFormComponent implements OnInit, OnDestroy {
     this.router.navigate([this.mainUrl]);
   }
 
-  // TODO: check if the user have a change, if true show confirm dialog else redirect
   cancelChange(): void {
-    if (!confirm('Are sure to exit without save?')) {
-      return;
+    if (!this.formGroup.dirty || confirm('Are sure to exit without save?')) {
+      this.goback();
     }
-    this.goback();
+  }
+
+  get form() {
+    return this.formGroup.controls;
   }
 
   ngOnDestroy(): void {
