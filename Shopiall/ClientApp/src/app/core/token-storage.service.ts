@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { User } from './models/user.model';
 
 export const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -7,7 +9,7 @@ const USER_KEY = 'auth-user';
   providedIn: 'root',
 })
 export class TokenStorageService {
-  constructor() {}
+  constructor(private tokenHelper: JwtHelperService) {}
 
   signOut(): void {
     localStorage.clear();
@@ -27,12 +29,13 @@ export class TokenStorageService {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
-  public getUser(): any {
-    const user = localStorage.getItem(USER_KEY);
-    if (user) {
-      return JSON.parse(user);
+  public getUser(): User {
+    const token = this.getToken();
+    if (!token) {
+      return {} as User;
     }
-
-    return {};
+    const payload = this.tokenHelper.decodeToken(token);
+    const user = { email: payload.email, name: payload.unique_name } as User;
+    return user;
   }
 }

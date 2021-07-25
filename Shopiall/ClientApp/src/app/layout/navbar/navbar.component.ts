@@ -1,21 +1,25 @@
 import { Component, OnInit, Inject, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
+import { TokenStorageService } from 'src/app/core/token-storage.service';
+import { User } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-
+  user: User;
   constructor(
-    @Inject(DOCUMENT) private document: Document, 
+    @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
-    private router: Router
-  ) { }
+    private router: Router,
+    private tokenService: TokenStorageService
+  ) {}
 
   ngOnInit(): void {
+    this.user = this.tokenService.getUser();
   }
 
   /**
@@ -31,11 +35,7 @@ export class NavbarComponent implements OnInit {
    */
   onLogout(e) {
     e.preventDefault();
-    localStorage.removeItem('isLoggedin');
-
-    if (!localStorage.getItem('isLoggedin')) {
-      this.router.navigate(['/auth/login']);
-    }
+    this.tokenService.signOut();
+    this.router.navigate(['/authentication/login']);
   }
-
 }
